@@ -294,11 +294,6 @@ section {
     bottom: 2.5rem;
 }
 
-.arrowup {
-    position: absolute;
-    right: -5rem;
-    top: 2.5rem;
-}
 
 .details-container {
     padding: 1.5rem;
@@ -428,6 +423,11 @@ article .icon {
     cursor: default;
 }
 
+.arrowup {
+    position: absolute;
+    right: -5rem;
+    bottom: 2.5rem;
+}
 
 /* FOOTER SECTION */
 
