@@ -321,6 +321,10 @@ section {
     margin: auto 0;
 }
 
+.text-container p {
+    text-align: -webkit-auto;
+}
+
 /* EXPERIENCE SECTION */
 
 #experience {
@@ -434,4 +438,5 @@ footer {
 
 footer p {
     text-align: center;
+    font-size: x-small;
 }
