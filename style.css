@@ -288,10 +288,16 @@ section {
     border-radius: 2rem;
 }
 
-.arrow {
+.arrowdown {
     position: absolute;
     right: -5rem;
     bottom: 2.5rem;
+}
+
+.arrowup {
+    position: absolute;
+    right: -5rem;
+    top: 2.5rem;
 }
 
 .details-container {
@@ -384,6 +390,7 @@ article .icon {
 /* CONTACT */
 
 #contact {
+    position: relative;
     display: flex;
     justify-content: center;
     flex-direction: column;

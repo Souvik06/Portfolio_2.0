@@ -27,7 +27,7 @@
   .section-container {
     display: block;
   }
-  .arrow {
+  .arrowup, .arrowdown {
     display: none;
   }
   section,
@@ -63,7 +63,10 @@
     height: fit-content;
     margin-bottom: 2rem;
   }
-  .about-containers,
+  .about-containers{
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
   .contact-info-upper-container,
   .btn-container {
     flex-wrap: wrap;
