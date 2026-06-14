@@ -12,7 +12,7 @@
     <link rel="preload" as="image" href="./assets/about-pic.jpeg">
     <link rel="preload" as="image" href="./assets/linkedin.png">
     <link rel="preload" as="image" href="./assets/github.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Dancing+Script:wght@500;600;700&family=Lovers+Quarrel&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="mediaqueries.css" />
   </head>
@@ -89,6 +89,13 @@
       <div class="cert-grid" data-certifications></div>
     </section>
 
+    <!-- Services Section -->
+    <section id="services">
+      <p class="section__text__p1"></p>
+      <h1 class="title"></h1>
+      <div class="services-grid" data-services></div>
+    </section>
+
     <!-- Posts Section -->
     <section id="posts">
       <p class="section__text__p1"></p>
@@ -127,6 +134,38 @@
       <p class="section__text__p1"></p>
       <h1 class="title"></h1>
       <div class="contact-info-upper-container" data-contact></div>
+
+      <form class="contact-form" id="contactForm" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+        <h3>Contact Me for Work / General Enquiries</h3>
+        <!-- Netlify: ties the submission to the "contact" form (used when hosted on Netlify) -->
+        <input type="hidden" name="form-name" value="contact">
+        <!-- Honeypots (must stay empty): botcheck = W3Forms, bot-field = Netlify -->
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none;">
+        <p class="hidden-field" hidden><label>Don’t fill this out if you’re human: <input name="bot-field"></label></p>
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" autocomplete="name" required>
+        </div>
+        <div class="form-field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
+        </div>
+        <div class="form-field">
+          <label for="enquiry">Enquiry</label>
+          <textarea id="enquiry" name="message" rows="4" required></textarea>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="isclient" name="project_interest" value="Yes">
+          <label for="isclient">I want you to work on a project with me</label>
+        </div>
+        <p class="form-note">*We'll never share your email &amp; phone with anyone else.</p>
+        <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+        <button type="submit" class="btn btn-color-1">Submit</button>
+      </form>
     </section>
 
     <footer>
@@ -143,6 +182,7 @@
     <script src="data/experience.js"></script>
     <script src="data/skills.js"></script>
     <script src="data/certifications.js"></script>
+    <script src="data/services.js"></script>
     <script src="data/posts.js"></script>
     <script src="data/recommendations.js"></script>
     <script src="data/socials.js"></script>

@@ -366,6 +366,19 @@ function renderCertifications() {
         </div>`).join('');
 }
 
+function renderServices() {
+    const d = PD.services;
+    const mount = document.querySelector('[data-services]');
+    if (!d || !mount) return;
+    setHeader('services', d);
+    mount.innerHTML = d.items.map(s => `
+        <div class="service-card">
+          <div class="service-icon">${s.icon}</div>
+          <h3>${s.title}</h3>
+          <p>${s.desc}</p>
+        </div>`).join('');
+}
+
 function renderSocials() {
     const data = PD.socials;
     const mount = document.getElementById('socials-container');
@@ -443,6 +456,95 @@ function renderNavigation() {
     if (cp) cp.textContent = d.copyright.replace('{year}', new Date().getFullYear());
 }
 
+/* ================= CONTACT FORM (Netlify Forms + W3Forms) =================
+   The form submits to BOTH backends so it works no matter where it's hosted:
+     • Netlify Forms  — captured automatically when the site is deployed on
+       Netlify (the POST to "/" is intercepted by Netlify's infra). On other
+       hosts that POST just 404s and is ignored.
+     • W3Forms        — a client-side POST that emails you on ANY host
+       (GitHub Pages, Netlify, localhost).
+
+   ACCESS KEY: a W3Forms key is PUBLISHABLE (it ships in this client JS no
+   matter what), so it's hardcoded below for simplicity. It is protected by
+   the Allowed Domains list in your W3Forms dashboard (add your github.io
+   and netlify.app domains), not by secrecy. If you inject
+   window.W3FORMS_ACCESS_KEY at build time, that overrides the hardcoded value.
+   ======================================================================== */
+function initContactForm() {
+    const ACCESS_KEY = (typeof window !== 'undefined' && window.W3FORMS_ACCESS_KEY) ||
+        'w3f_fa884b878c29b474e409d2daeb91e2096d6ff13ccc8b1675';
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    const statusEl = document.getElementById('formStatus');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const defaultBtnText = submitBtn ? submitBtn.textContent : '';
+
+    function setStatus(message, type) {
+        if (!statusEl) return;
+        statusEl.textContent = message || '';
+        statusEl.className = 'form-status' + (type ? ' ' + type : '');
+        statusEl.style.display = message ? 'block' : 'none';
+    }
+
+    function setLoading(loading) {
+        if (!submitBtn) return;
+        submitBtn.disabled = loading;
+        submitBtn.textContent = loading ? 'Sending\u2026' : defaultBtnText;
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        setStatus('', '');
+
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        if (!ACCESS_KEY || ACCESS_KEY.indexOf('__') === 0) {
+            setStatus("Contact form isn't configured yet \u2014 the W3Forms access key is missing.", 'error');
+            return;
+        }
+
+        setLoading(true);
+        setStatus('Sending your message\u2026', 'pending');
+
+        // 1) Netlify Forms — captured only when hosted on Netlify; harmless 404 elsewhere.
+        const netlifyPost = fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(new FormData(form)).toString()
+        }).then(r => r.ok).catch(() => false);
+
+        // 2) W3Forms — emails on any host.
+        const w3Data = new FormData(form);
+        w3Data.set('access_key', ACCESS_KEY);
+        const name = (w3Data.get('name') || '').toString().trim();
+        w3Data.set('subject', 'New portfolio enquiry from ' + (name || 'a visitor'));
+        w3Data.set('from_name', 'Souvik Portfolio \u2014 Contact Form');
+        const w3Post = fetch('https://api.w3forms.com/submit', {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: w3Data
+        })
+            .then(response => response.json().then(json => ({ ok: response.ok, json })))
+            .catch(() => ({ ok: false, json: null }));
+
+        Promise.all([netlifyPost, w3Post])
+            .then(([netlifyOk, w3]) => {
+                const w3Ok = w3.ok && w3.json && w3.json.success;
+                if (w3Ok || netlifyOk) {
+                    setStatus("Thanks! Your message has been sent \u2014 I'll get back to you soon.", 'success');
+                    form.reset();
+                } else {
+                    setStatus((w3.json && (w3.json.error || w3.json.message)) || 'Something went wrong. Please try again or email me directly at souvik.chat2011@gmail.com.', 'error');
+                }
+            })
+            .finally(() => setLoading(false));
+    });
+}
+
 function initCarousels() {
     const map = {
         posts: { data: PD.posts, render: renderPostCard, sectionId: 'posts' },
@@ -472,8 +574,10 @@ window.addEventListener('DOMContentLoaded', () => {
     renderExperience();
     renderSkills();
     renderCertifications();
+    renderServices();
     renderSocials();
     renderContact();
+    initContactForm();
     initCarousels();
 });
 

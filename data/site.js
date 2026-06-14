@@ -7,6 +7,7 @@ window.PORTFOLIO_DATA.site = {
     { label: "Experience", href: "#experience" },
     { label: "Skills", href: "#skills" },
     { label: "Certifications", href: "#certifications" },
+    { label: "Services", href: "#services" },
     { label: "Posts", href: "#posts" },
     { label: "Recommendations", href: "#testimonials" },
     { label: "Contact", href: "#contact" },

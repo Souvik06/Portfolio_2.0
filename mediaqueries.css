@@ -68,11 +68,11 @@
 
 @media screen and (max-width: 900px) {
   .title {
-    font-size: 2rem;
+    font-size: 2.6rem;
   }
 
   #profile .title {
-    font-size: 2.5rem;
+    font-size: 4.5rem;
   }
 
   .about-containers {
@@ -118,11 +118,11 @@
   }
 
   .title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
 
   #profile .title {
-    font-size: 2.2rem;
+    font-size: 3.6rem;
   }
 
   .section__pic-container {
@@ -193,6 +193,6 @@
   }
 
   .logo {
-    font-size: 1.2rem;
+    font-size: 2rem;
   }
 }
